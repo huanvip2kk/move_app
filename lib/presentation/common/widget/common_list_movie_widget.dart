@@ -10,11 +10,12 @@ class CommonListMovieWidget extends StatelessWidget {
     Key? key,
     required this.brief,
     required this.onTap,
-    required this.thumbnails,
+    this.thumbnails = 'https://www.example.com/image1.jpg',
     required this.title,
     required this.time,
     required this.author,
     required this.releaseDate,
+    required this.IMDB,
   }) : super(key: key);
 
   final VoidCallback onTap;
@@ -24,6 +25,7 @@ class CommonListMovieWidget extends StatelessWidget {
   final String time;
   final String releaseDate;
   final String author;
+  final double IMDB;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -35,7 +37,7 @@ class CommonListMovieWidget extends StatelessWidget {
             children: [
               ClipRRect(
                 child: Image(
-                  image: AssetImage(thumbnails),
+                  image: NetworkImage(thumbnails),
                   width: 150.w,
                   height: 220.h,
                   fit: BoxFit.cover,
@@ -74,7 +76,7 @@ class CommonListMovieWidget extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 50.h,
+                      height: 65.h,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: CommonOverviewDetailWidget(
@@ -84,8 +86,8 @@ class CommonListMovieWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const CommonRatingWidget(
-                      ratingNumber: 8,
+                     CommonRatingWidget(
+                      ratingNumber: IMDB,
                     ),
                   ],
                 ),

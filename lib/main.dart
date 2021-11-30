@@ -17,7 +17,7 @@ Future<void> main() async {
   sharedPrefs.init();
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
+      enabled: false,
       builder: (context) => MyApp(), // Wrap your app
     ),
   );
@@ -47,7 +47,6 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             color: AppColors.primaryColor,
             locale: DevicePreview.locale(context),
-            builder: DevicePreview.appBuilder,
             title: 'Movie_app',
             initialRoute: RouteDefine.splashScreen.name,
             onGenerateRoute: AppRouting.generateRoute,

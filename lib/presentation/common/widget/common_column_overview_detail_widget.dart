@@ -15,23 +15,25 @@ class CommonColumnOverViewDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          title,
-          style: AppTextStyle.fontSize14.copyWith(
-            fontWeight: FontWeight.bold,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: AppTextStyle.fontSize14.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        SizedBox(
-          height: 5.h,
-        ),
-        Text(
-          value,
-          style: AppTextStyle.fontSize14.copyWith(color: Colors.orange),
-        ),
-      ],
+          SizedBox(
+            height: 5.h,
+          ),
+          Text(
+            value,
+            style: AppTextStyle.fontSize14.copyWith(color: Colors.orange),
+          ),
+        ],
+      ),
     );
   }
 }

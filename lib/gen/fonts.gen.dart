@@ -8,5 +8,6 @@
 class FontFamily {
   FontFamily._();
 
+  /// Font family: patrickHandRegular
   static const String patrickHandRegular = 'patrickHandRegular';
 }

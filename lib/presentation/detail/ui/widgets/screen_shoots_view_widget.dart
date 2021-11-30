@@ -6,10 +6,10 @@ import '../../../common/widget/back_app_bar_icon_button.dart';
 class ScreenShootsViewWidget extends StatelessWidget {
   const ScreenShootsViewWidget({
     Key? key,
-    required this.assetsImage,
+    required this.imagesNetwork,
   }) : super(key: key);
 
-  final String assetsImage;
+  final String imagesNetwork;
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +21,8 @@ class ScreenShootsViewWidget extends StatelessWidget {
       ),
       extendBodyBehindAppBar: true,
       body: PhotoView(
-        imageProvider: AssetImage(
-          assetsImage,
+        imageProvider: NetworkImage(
+          imagesNetwork,
         ),
       ),
     );

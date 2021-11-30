@@ -6,6 +6,8 @@ import 'package:movie_app/generated/l10n.dart';
 import 'package:movie_app/presentation/common/widget/common_category_widget.dart';
 import 'package:movie_app/presentation/common/widget/common_divider_widget.dart';
 import 'package:movie_app/presentation/common/widget/common_list_movie_widget.dart';
+import 'package:movie_app/presentation/detail/detail_route.dart';
+import 'package:movie_app/presentation/home/bloc/home_bloc.dart';
 import 'package:movie_app/utils/route/app_routing.dart';
 
 import 'carousel_slider_widget.dart';
@@ -16,25 +18,16 @@ class SmallScreen extends StatelessWidget {
     required this.mWidth,
     required this.mHeight,
     required this.trendingTitle,
-    required this.author,
-    required this.movieName,
     required this.popularTitle,
-    required this.brief,
-    required this.uploadTime,
-    required this.thumbnails,
-    required this.time,
+    required this.state,
   }) : super(key: key);
 
   final double mWidth;
   final double mHeight;
   final String trendingTitle;
-  final String author;
-  final String movieName;
   final String popularTitle;
-  final String brief;
-  final String uploadTime;
-  final String thumbnails;
-  final String time;
+
+  final HomeLoadedState state;
 
   @override
   Widget build(BuildContext context) {
@@ -45,18 +38,7 @@ class SmallScreen extends StatelessWidget {
           CarouselSliderWidget(
             mWidth: mWidth,
             mHeight: mHeight,
-            title: 'Title',
-            image: Assets.images.slide2.image(
-              width: mWidth,
-              height: mHeight,
-              fit: BoxFit.cover,
-            ),
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                RouteDefine.detailScreen.name,
-              );
-            },
+            sliderModel: state.sliderModel,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -65,21 +47,16 @@ class SmallScreen extends StatelessWidget {
               children: [
                 const CommonDividerWidget(),
                 CommonCategoryWidget(
-                  image: Assets.images.slide1.path,
+                  popularModel: state.popularModel,
+                  trendingModel: state.trendingModel,
                   title: trendingTitle,
-                  author: author,
-                  movieName: movieName,
-                  itemCount: 3,
-                  ratingNumber: 8,
                 ),
                 const CommonDividerWidget(),
                 CommonCategoryWidget(
-                  image: Assets.images.slide2.path,
+                  trendingModel: state.trendingModel,
+                  popularModel: state.popularModel,
+                  isTrending: false,
                   title: popularTitle,
-                  author: author,
-                  movieName: movieName,
-                  itemCount: 3,
-                  ratingNumber: 5,
                 ),
                 const CommonDividerWidget(),
                 Padding(
@@ -97,20 +74,60 @@ class SmallScreen extends StatelessWidget {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) => CommonListMovieWidget(
-                    brief: brief,
-                    author: author,
-                    releaseDate: uploadTime,
+                    IMDB: double.parse(
+                      state.maybeYouWantToSeeModel.maybeyouwanttosee[index].IMDB
+                          .toString(),
+                    ),
+                    brief: state.maybeYouWantToSeeModel.maybeyouwanttosee[index]
+                        .introduce
+                        .toString(),
+                    author: state.maybeYouWantToSeeModel
+                        .maybeyouwanttosee[index].authorName
+                        .toString(),
+                    releaseDate: state
+                        .maybeYouWantToSeeModel.maybeyouwanttosee[index].date
+                        .toString(),
                     onTap: () {
                       Navigator.pushNamed(
                         context,
                         RouteDefine.detailScreen.name,
+                        arguments: MoviesValue(
+                          time: state.maybeYouWantToSeeModel
+                              .maybeyouwanttosee[index].time
+                              .toString(),
+                          author: state.maybeYouWantToSeeModel
+                              .maybeyouwanttosee[index].authorName
+                              .toString(),
+                          desc: state.maybeYouWantToSeeModel
+                              .maybeyouwanttosee[index].introduce
+                              .toString(),
+                          imagesNetwork: state.maybeYouWantToSeeModel
+                              .maybeyouwanttosee[index].avatar
+                              .toString(),
+                          link: state.maybeYouWantToSeeModel
+                              .maybeyouwanttosee[index].movieLink
+                              .toString(),
+                          releaseDate: state.maybeYouWantToSeeModel
+                              .maybeyouwanttosee[index].date
+                              .toString(),
+                          screenshots: state.maybeYouWantToSeeModel
+                              .maybeyouwanttosee[index].screenshot
+                              .toString(),
+                        ),
                       );
                     },
-                    thumbnails: thumbnails,
-                    title: movieName,
-                    time: time,
+                    thumbnails: state
+                        .maybeYouWantToSeeModel.maybeyouwanttosee[index].avatar
+                        .toString(),
+                    title: state.maybeYouWantToSeeModel.maybeyouwanttosee[index]
+                        .movieName
+                        .toString(),
+                    time: state
+                        .maybeYouWantToSeeModel.maybeyouwanttosee[index].time
+                        .toString(),
                   ),
-                  itemCount: 3,
+                  itemCount:
+                      state.maybeYouWantToSeeModel.maybeyouwanttosee.length,
                 ),
               ],
             ),

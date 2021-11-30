@@ -9,10 +9,10 @@ import 'screen_shoots_view_widget.dart';
 class ScreenShootsWidget extends StatelessWidget {
   const ScreenShootsWidget({
     Key? key,
-    required this.image,
+    required this.imageNetwork,
   }) : super(key: key);
 
-  final Widget image;
+  final String imageNetwork;
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +43,17 @@ class ScreenShootsWidget extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: InkWell(
-                      child: image,
+                      child: Image.network(
+                        imageNetwork,
+                        fit: BoxFit.cover,
+                        width: 350.w,
+                        height: 175.h,
+                      ),
                       onTap: () {
                         showDialog(
                           context: context,
                           builder: (context) => ScreenShootsViewWidget(
-                            assetsImage: Assets.images.slide1.path,
+                            imagesNetwork: imageNetwork,
                           ),
                         );
                       },

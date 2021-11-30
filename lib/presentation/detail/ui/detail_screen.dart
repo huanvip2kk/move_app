@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movie_app/presentation/detail/detail_route.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../gen/assets.gen.dart';
@@ -9,23 +11,13 @@ import '../../common/widget/common_icon_button.dart';
 import 'widgets/overview_widget.dart';
 import 'widgets/screen_shoots_widget.dart';
 
-class DetailScreen extends StatefulWidget {
-  const DetailScreen({Key? key}) : super(key: key);
+class DetailScreen extends StatelessWidget {
+  final MoviesValue moviesValue;
 
-  @override
-  _DetailScreenState createState() => _DetailScreenState();
-}
-
-class _DetailScreenState extends State<DetailScreen> {
-  final String overviewText =
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.';
-
-  final String title = 'Title';
-  final String releaseDate = '10/10/2021';
-  final String author = "Author";
-  final String time = "30 minutes";
-  final String youtubeUrl =
-      'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';
+  const DetailScreen({
+    Key? key,
+    required this.moviesValue,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +25,7 @@ class _DetailScreenState extends State<DetailScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        leading: const BackAppBarIconButton(
-        ),
+        leading: const BackAppBarIconButton(),
       ),
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
@@ -42,8 +33,12 @@ class _DetailScreenState extends State<DetailScreen> {
           children: [
             ClipPath(
               child: ClipRRect(
-                child: Assets.images.slide1.image(
-                    width: double.infinity, height: 400.h, fit: BoxFit.cover),
+                child: Image.network(
+                  moviesValue.imagesNetwork,
+                  width: double.infinity,
+                  height: 400.h,
+                  fit: BoxFit.cover,
+                ),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(30),
                   bottomRight: Radius.circular(30),
@@ -57,15 +52,34 @@ class _DetailScreenState extends State<DetailScreen> {
                     top: 175.h,
                     bottom: 200.h,
                   ),
-                  child: CommonIconButton(
-                    onPressed: () async {
-                      if (await canLaunch(youtubeUrl)) {
-                        await launch(youtubeUrl);
+                  child: InkWell(
+                    onTap: () async {
+                      if (await canLaunch(moviesValue.link)) print('ok');
+                      {
+                        await launch(moviesValue.link);
                       }
                     },
-                    icon: Icon(
-                      Icons.play_arrow_outlined,
-                      size: 75.r,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(Assets.images.play.assetName),
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50.r),
+                        ),
+                      ),
+                      child: CommonIconButton(
+                        onPressed: () async {
+                          if (await canLaunch(moviesValue.link)) print('ok');
+                          {
+                            await launch(moviesValue.link);
+                          }
+                        },
+                        icon: Icon(
+                          Icons.play_arrow_outlined,
+                          size: 1.r,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -78,18 +92,14 @@ class _DetailScreenState extends State<DetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       OverviewWidget(
-                        releaseDate: releaseDate,
-                        overviewText: overviewText,
-                        author: author,
-                        time: time,
+                        releaseDate: moviesValue.releaseDate,
+                        overviewText: moviesValue.desc,
+                        author: moviesValue.author,
+                        time: moviesValue.time,
                       ),
                       const CommonDividerWidget(),
                       ScreenShootsWidget(
-                        image: Assets.images.slide3.image(
-                          fit: BoxFit.cover,
-                          width: 350.w,
-                          height: 175.h,
-                        ),
+                        imageNetwork: moviesValue.screenshots,
                       ),
                     ],
                   ),
